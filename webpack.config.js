@@ -73,9 +73,7 @@ module.exports = {
       ]
     }]
   },
-  devServer: {
-    overlay: true, // Чтобы выводить ошибки не в консоле, а на экране
-  },
+
   // Регистрируем все наши плагины здесь
   plugins: [
     new MiniCssExtractPlugin({

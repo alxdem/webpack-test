@@ -1,1 +1,1 @@
-"# webpack-test" 
+# Тестовая сборка Webpack

@@ -1,21 +1,42 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const PATHS = {
+  src: path.join(__dirname, './src'),
+  dist: path.join(__dirname, './dist'),
+  assets: 'assets/'
+};
 
 module.exports = {
+
+  externals: {
+    paths: PATHS
+  },
+
   entry: {
-    app: './src/index.js'
+    app: PATHS.src
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist' // Нужен для dev-сервера
+    // filename: '[name].js',
+    filename: `${PATHS.assets}js/[name].js`,
+    path: PATHS.dist,
+    publicPath: '/' // Нужен для dev-сервера
   },
   module: {
     rules: [{
-      test: /\.js$/, // Какие файлы обрабатываем
-      loader: 'babel-loader', // Через что обрабатываем
-      exclude: '/node_modules' // Исключаем папку с файлами
-    },
+        test: /\.js$/, // Какие файлы обрабатываем
+        loader: 'babel-loader', // Через что обрабатываем
+        exclude: '/node_modules' // Исключаем папку с файлами
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/, // Какие файлы обрабатываем
+        loader: 'file-loader', // Через что обрабатываем
+        options: {
+          name: '[name].[ext]' // ext - берем раснирение из test
+        }
+      },
       {
         test: /\.scss$/,
         use: [
@@ -77,7 +98,24 @@ module.exports = {
   // Регистрируем все наши плагины здесь
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      // filename: '[name].css',
+      filename: `${PATHS.assets}css/[name].css`,
     }),
+    new HtmlWebpackPlugin({
+      hash: false,
+      template: `${PATHS.src}/index.html`,
+      filename: './index.html'
+    }),
+    // Копируем картинки
+    new CopyWebpackPlugin([
+      {
+        from: `${PATHS.src}/images`, // Откуда копируем
+        to: `${PATHS.assets}images` // Куда
+      },
+      {
+        from: `${PATHS.src}/static`, // Откуда копируем
+        to: '' // Куда
+      },
+    ]),
   ],
 };

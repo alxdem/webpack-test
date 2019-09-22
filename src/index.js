@@ -6,4 +6,4 @@ import './scss/main.scss';
 import React from 'react'; // Второй способ
 // window.React = require('react'); // Третий способ
 
-React.Component;
+// React.Component;

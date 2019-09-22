@@ -1,3 +1,10 @@
-wrapper{
-  display: flex;
+.wrapper{
+  display: block;
+}
+
+.r{
+  background-image: url('/assets/images/2.jpg');
+  width: 700px;
+  height: 400px;
+  background-size: contain;
 }

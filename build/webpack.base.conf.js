@@ -20,9 +20,22 @@ module.exports = {
   },
   output: {
     // filename: '[name].js',
-    filename: `${PATHS.assets}js/[name].js`,
+    filename: `${PATHS.assets}js/[name].[hash].js`,
     path: PATHS.dist,
     publicPath: '/' // Нужен для dev-сервера
+  },
+  // Помещаем код всех библиотек (то, что мы не меняем часто) в отдельный файл vendors.js
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          name: 'vendors',
+          test: /node_modules/,
+          chunks: 'all',
+          enforce: true,
+        }
+      }
+    }
   },
   module: {
     rules: [{
@@ -99,7 +112,7 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       // filename: '[name].css',
-      filename: `${PATHS.assets}css/[name].css`,
+      filename: `${PATHS.assets}css/[name].[hash].css`,
     }),
     new HtmlWebpackPlugin({
       hash: false,
